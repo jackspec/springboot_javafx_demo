@@ -1,6 +1,6 @@
 package com.turbo00.springboot_javax_study1;
 
-import com.turbo00.springboot_javax_study1.domain.Customer;
+import com.turbo00.springboot_javax_study1.domain.para.Customer;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

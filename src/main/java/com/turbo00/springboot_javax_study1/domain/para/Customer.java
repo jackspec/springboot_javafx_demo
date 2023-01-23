@@ -1,6 +1,7 @@
-package com.turbo00.springboot_javax_study1.domain;
+package com.turbo00.springboot_javax_study1.domain.para;
 
 
+import com.turbo00.springboot_javax_study1.domain.Base;
 import jakarta.persistence.Column;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Getter;

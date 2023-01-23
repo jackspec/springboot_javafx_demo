@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.turbo00.springboot_javax_study1.interfaces.javafx.para.CustomerAdminController"
+            fx:controller="com.turbo00.springboot_javax_study1.interfaces.javafx.para.SupplierAdminController"
             prefHeight="400.0" prefWidth="600.0">
 
     <Label text="供应商管理窗口"/>
