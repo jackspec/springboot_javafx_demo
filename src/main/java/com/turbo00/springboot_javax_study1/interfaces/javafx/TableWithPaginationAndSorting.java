@@ -1,11 +1,14 @@
 package com.turbo00.springboot_javax_study1.interfaces.javafx;
 
 import javafx.collections.FXCollections;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.util.Callback;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,7 +42,12 @@ public class TableWithPaginationAndSorting<T> {
     private void updatePagination() {
         tableViewWithPaginationPane.setPageFactory(pageIndex -> {
             tableView.setItems(FXCollections.observableList(page.getCurrentPageDataList(pageIndex)));
-            return tableView;
+            //a dummy group.当返回一个group时，在界面上不占用位置
+            //如果直接返回tableView,则tableView的高度会消失，变成上下挤在一起的一个tableView
+            Group group = new Group();
+            group.setVisible(false);
+            group.setUserData(new String("content of page(zero based):" + pageIndex));
+            return group;
         });
     }
 

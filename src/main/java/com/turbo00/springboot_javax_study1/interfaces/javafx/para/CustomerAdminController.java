@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,16 +42,6 @@ public class CustomerAdminController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tblCustomer.setPrefWidth(parentContainer.getScene().getWidth());
-        parentContainer.getScene().widthProperty().addListener(
-                (observableValue, oldValue, newValue) -> tblCustomer.setPrefWidth(newValue.doubleValue())
-        );
-
-        tblCustomer.setPrefHeight(parentContainer.getScene().getHeight());
-        parentContainer.getScene().heightProperty().addListener(
-                (observableValue, oldValue, newValue) -> tblCustomer.setPrefHeight(newValue.doubleValue())
-        );
-
         TableColumn<Customer, String> nameCol = new TableColumn<>("姓名");
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         TableColumn<Customer, String> contactCol = new TableColumn<>("联系方式");
@@ -67,6 +58,21 @@ public class CustomerAdminController implements Initializable {
 
         //add pagination into table
         TableWithPaginationAndSorting<Customer> table = new TableWithPaginationAndSorting<>(page, tblCustomer, pagi);
+
+        //global sorting by column age
+        Comparator<Customer> asc = (o1, o2) -> o1.getName().compareTo(o2.getName());
+        Comparator<Customer> desc = (o1, o2) -> o2.getName().compareTo(o1.getName());
+        table.addGlobalOrdering(tblCustomer.getColumns().get(0), asc, desc);
+
+        tblCustomer.setPrefWidth(parentContainer.getScene().getWidth());
+        parentContainer.getScene().widthProperty().addListener(
+                (observableValue, oldValue, newValue) -> tblCustomer.setPrefWidth(newValue.doubleValue())
+        );
+
+        tblCustomer.setPrefHeight(parentContainer.getScene().getHeight());
+        parentContainer.getScene().heightProperty().addListener(
+                (observableValue, oldValue, newValue) -> tblCustomer.setPrefHeight(newValue.doubleValue())
+        );
     }
 
     private List<Customer> getTableData() {
