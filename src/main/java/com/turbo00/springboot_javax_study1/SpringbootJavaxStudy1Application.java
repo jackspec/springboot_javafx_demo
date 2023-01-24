@@ -22,6 +22,9 @@ public class SpringbootJavaxStudy1Application extends Application {
 		return fxmlLoader;
 	}
 
+	public static ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
 
 	public static void main(String[] args) {
 		applicationContext = SpringApplication.run(SpringbootJavaxStudy1Application.class, args);

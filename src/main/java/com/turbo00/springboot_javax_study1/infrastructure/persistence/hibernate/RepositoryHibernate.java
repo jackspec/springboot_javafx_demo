@@ -154,8 +154,9 @@ public abstract class RepositoryHibernate<T, PK extends Serializable>
     @Override
     @Transactional(readOnly = true)
     public Long count(JpaCriteriaHolder jpaCriteriaHolder) {
-        jpaCriteriaHolder.getCriteriaQuery().select(jpaCriteriaHolder.getCriteriaBuilder().count(jpaCriteriaHolder.getRoot()));
-        Query query = jpaCriteriaHolder.getSession().createQuery(jpaCriteriaHolder.getCriteriaQuery());
+        Query query = jpaCriteriaHolder.getSession().createQuery(
+                jpaCriteriaHolder.getCriteriaQuery().select(jpaCriteriaHolder.getCriteriaBuilder().count(jpaCriteriaHolder.getRoot()))
+        );
         try {
             return (Long) query.getSingleResult();
         } catch (NoResultException e) {

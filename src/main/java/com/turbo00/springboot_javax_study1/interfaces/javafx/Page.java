@@ -1,17 +1,23 @@
 package com.turbo00.springboot_javax_study1.interfaces.javafx;
 
+import com.turbo00.springboot_javax_study1.infrastructure.persistence.hibernate.JpaCriteriaHolder;
 import javafx.beans.property.SimpleIntegerProperty;
+import lombok.Getter;
 
 import java.util.List;
 
 /**
  * https://www.jianshu.com/p/21193fcc05f1
  */
-public class Page<T> {
+public abstract class Page<T> {
     private SimpleIntegerProperty totalRecord; // total record number in source data
     private SimpleIntegerProperty pageSize; // the number of data in per page
     private SimpleIntegerProperty totalPage; // total page number
-    private List<T> rowDataList; // total data
+    @Getter
+    private int currentPage;
+
+    protected JpaCriteriaHolder jpaCriteriaHolder;
+    protected JpaCriteriaHolder jpaCriteriaHolderCount;
 
     // setter
     public void setPageSize(int pageSize) {
@@ -43,25 +49,22 @@ public class Page<T> {
         return totalPage;
     }
 
-    public List<T> getRowDataList() {
-        return rowDataList;
-    }
-
 
     /**
-     * @param rowDataList
      * @param pageSize    the number of data in per page
      */
-    public Page(List<T> rowDataList, int pageSize) {
+    public Page(JpaCriteriaHolder jpaCriteriaHolder, JpaCriteriaHolder jpaCriteriaHolderCount, int pageSize) {
         this.totalRecord = new SimpleIntegerProperty();
         this.totalPage = new SimpleIntegerProperty();
-        this.rowDataList = rowDataList;
         this.pageSize = new SimpleIntegerProperty(pageSize);
+        currentPage = 0;
+        this.jpaCriteriaHolder = jpaCriteriaHolder;
+        this.jpaCriteriaHolderCount = jpaCriteriaHolderCount;
         initialize();
     }
 
     private void initialize() {
-        totalRecord.set(rowDataList.size());
+        totalRecord.set(rowCount());
 
         // calculate the number of total pages
         totalPage.set(
@@ -85,11 +88,10 @@ public class Page<T> {
      * @return
      */
     public List<T> getCurrentPageDataList(int currentPage) {
-        int fromIndex = pageSize.get() * currentPage;
-        int tmp = pageSize.get() * currentPage + pageSize.get() - 1;
-        int endIndex = tmp >= totalRecord.get() ? totalRecord.get() - 1 : tmp;
-
-        // subList(fromIndex, toIndex) -> [fromIndex, toIndex)
-        return rowDataList.subList(fromIndex, endIndex + 1);
+        this.currentPage = currentPage;
+        return listPartRow(pageSize.get() ,currentPage);
     }
+
+    protected abstract int rowCount();
+    protected abstract List<T> listPartRow(int pageSize, int currentPage);
 }

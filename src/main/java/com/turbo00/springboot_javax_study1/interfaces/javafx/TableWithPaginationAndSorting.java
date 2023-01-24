@@ -113,6 +113,6 @@ public class TableWithPaginationAndSorting<T> {
      * @param comparator
      */
     private void order(Comparator<? super T> comparator) {
-        Collections.sort(page.getRowDataList(), comparator);
+        Collections.sort(page.listPartRow(page.getPageSize(), page.getCurrentPage()), comparator);
     }
 }
