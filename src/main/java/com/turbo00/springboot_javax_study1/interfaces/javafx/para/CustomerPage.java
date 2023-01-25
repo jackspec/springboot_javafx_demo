@@ -25,8 +25,8 @@ public class CustomerPage extends Page {
     }
 
     @Override
-    protected List listPartRow(int pageSize, int currentPage) {
+    protected List listPartRow(int pageSize, int itemStartNumber) {
         CustomerService customerService = (CustomerService) SpringbootJavaxStudy1Application.getApplicationContext().getBean("customerService");
-        return customerService.listCustomer(currentPage, pageSize, jpaCriteriaHolder);
+        return customerService.listCustomer(itemStartNumber, pageSize, jpaCriteriaHolder);
     }
 }

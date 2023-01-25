@@ -30,9 +30,13 @@ public class MainController {
     @Value("${app_title}")
     private String appTitle;
 
+    Parent cusAdminWnd;
+
     public void menuCustomerAdminClicked(ActionEvent actionEvent) throws IOException {
         customerAdminController.setParentContainer(container);
-        Parent cusAdminWnd = loadFxml("/fxml/para/customerAdmin.fxml").load();
+        if (cusAdminWnd == null) {
+            cusAdminWnd = loadFxml("/fxml/para/customerAdmin.fxml").load();
+        }
         container.setCenter(cusAdminWnd);
         primaryStage.setTitle(appTitle + ":客户信息管理");
     }

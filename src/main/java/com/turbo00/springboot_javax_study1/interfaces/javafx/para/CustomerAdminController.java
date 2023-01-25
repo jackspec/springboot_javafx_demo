@@ -56,7 +56,7 @@ public class CustomerAdminController implements Initializable {
         tblCustomer.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         //create page object
-        CustomerPage customerPage = new CustomerPage(getJpaCriteriaHolder(false), getJpaCriteriaHolder(true), 5);
+        CustomerPage customerPage = new CustomerPage(getJpaCriteriaHolder(false), getJpaCriteriaHolder(true), 2);
 
         //get first page data
         tblCustomer.setItems(FXCollections.observableList(customerPage.listPartRow(customerPage.getPageSize(), 0)));
@@ -79,6 +79,8 @@ public class CustomerAdminController implements Initializable {
                 (observableValue, oldValue, newValue) -> tblCustomer.setPrefHeight(newValue.doubleValue())
         );
     }
+
+
 
 
     public JpaCriteriaHolder getJpaCriteriaHolder(boolean isCount) {
