@@ -56,10 +56,10 @@ public class CustomerAdminController implements Initializable {
         tblCustomer.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         //create page object
-        CustomerPage customerPage = new CustomerPage(getJpaCriteriaHolder(false), getJpaCriteriaHolder(true), 2);
+        CustomerPage customerPage = new CustomerPage(getJpaCriteriaHolder(false), getJpaCriteriaHolder(true), 10);
 
         //get first page data
-        tblCustomer.setItems(FXCollections.observableList(customerPage.listPartRow(customerPage.getPageSize(), 0)));
+        tblCustomer.setItems(FXCollections.observableList(customerPage.listPartRow(0, customerPage.getPageSize())));
 
         //add pagination into table
         TableWithPaginationAndSorting<Customer> table = new TableWithPaginationAndSorting<>(customerPage, tblCustomer, pagi);
@@ -79,8 +79,6 @@ public class CustomerAdminController implements Initializable {
                 (observableValue, oldValue, newValue) -> tblCustomer.setPrefHeight(newValue.doubleValue())
         );
     }
-
-
 
 
     public JpaCriteriaHolder getJpaCriteriaHolder(boolean isCount) {

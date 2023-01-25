@@ -89,9 +89,9 @@ public abstract class Page<T> {
      */
     public List<T> getCurrentPageDataList(int currentPage) {
         this.currentPage = currentPage;
-        return listPartRow(pageSize.get(), currentPage * pageSize.get());
+        return listPartRow(currentPage * pageSize.get(), pageSize.get());
     }
 
     protected abstract int rowCount();
-    protected abstract List<T> listPartRow(int pageSize, int itemStartNumber);
+    protected abstract List<T> listPartRow(int itemStartNumber, int pageSize);
 }
