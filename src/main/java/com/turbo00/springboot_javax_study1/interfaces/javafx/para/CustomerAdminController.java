@@ -3,37 +3,36 @@ package com.turbo00.springboot_javax_study1.interfaces.javafx.para;
 import com.turbo00.springboot_javax_study1.domain.para.Customer;
 import com.turbo00.springboot_javax_study1.domain.para.CustomerRepository;
 import com.turbo00.springboot_javax_study1.infrastructure.persistence.hibernate.JpaCriteriaHolder;
-import com.turbo00.springboot_javax_study1.interfaces.javafx.Page;
 import com.turbo00.springboot_javax_study1.interfaces.javafx.TableWithPaginationAndSorting;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.util.Callback;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.Setter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
-@Controller
+import static com.turbo00.springboot_javax_study1.SpringbootJavaxStudy1Application.loadFxml;
+
+@Component
 public class CustomerAdminController implements Initializable {
     @Setter
     BorderPane parentContainer;
@@ -46,29 +45,11 @@ public class CustomerAdminController implements Initializable {
     @Autowired
     CustomerRepository customerRepository;
 
+    TableWithPaginationAndSorting<Customer> table;
+    int pageSize = 10;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TableColumn<Customer, String> nameCol = new TableColumn<>("姓名");
-        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
-        TableColumn<Customer, String> contactCol = new TableColumn<>("联系方式");
-        contactCol.setCellValueFactory(new PropertyValueFactory("contact"));
-        tblCustomer.getColumns().addAll(nameCol, contactCol);
-        tblCustomer.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        //create page object
-        CustomerPage customerPage = new CustomerPage(getJpaCriteriaHolder(false), getJpaCriteriaHolder(true), 10);
-
-        //get first page data
-        tblCustomer.setItems(FXCollections.observableList(customerPage.listPartRow(0, customerPage.getPageSize())));
-
-        //add pagination into table
-        TableWithPaginationAndSorting<Customer> table = new TableWithPaginationAndSorting<>(customerPage, tblCustomer, pagi);
-
-        //global sorting by column name
-        Comparator<Customer> asc = (o1, o2) -> o1.getName().compareTo(o2.getName());
-        Comparator<Customer> desc = (o1, o2) -> o2.getName().compareTo(o1.getName());
-        table.addGlobalOrdering(tblCustomer.getColumns().get(1), asc, desc);
-
         tblCustomer.setPrefWidth(parentContainer.getScene().getWidth());
         parentContainer.getScene().widthProperty().addListener(
                 (observableValue, oldValue, newValue) -> tblCustomer.setPrefWidth(newValue.doubleValue())
@@ -78,6 +59,28 @@ public class CustomerAdminController implements Initializable {
         parentContainer.getScene().heightProperty().addListener(
                 (observableValue, oldValue, newValue) -> tblCustomer.setPrefHeight(newValue.doubleValue())
         );
+
+
+        TableColumn<Customer, String> nameCol = new TableColumn<>("姓名");
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        TableColumn<Customer, String> contactCol = new TableColumn<>("联系方式");
+        contactCol.setCellValueFactory(new PropertyValueFactory("contact"));
+        tblCustomer.getColumns().addAll(nameCol, contactCol);
+        tblCustomer.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        //create page object
+        CustomerPage customerPage = new CustomerPage(getJpaCriteriaHolder(false), getJpaCriteriaHolder(true), pageSize);
+
+        //get first page data
+        tblCustomer.setItems(FXCollections.observableList(customerPage.listPartRow(0, customerPage.getPageSize())));
+
+        //add pagination into table
+        table = new TableWithPaginationAndSorting<>(customerPage, tblCustomer, pagi);
+
+        //global sorting by column name
+        Comparator<Customer> asc = (o1, o2) -> o1.getName().compareTo(o2.getName());
+        Comparator<Customer> desc = (o1, o2) -> o2.getName().compareTo(o1.getName());
+        table.addGlobalOrdering(tblCustomer.getColumns().get(1), asc, desc);
     }
 
 
@@ -99,5 +102,25 @@ public class CustomerAdminController implements Initializable {
         jpaCriteriaHolder.setRoot(root);
 
         return jpaCriteriaHolder;
+    }
+
+    public void btnAddClicked(ActionEvent actionEvent) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = loadFxml("/fxml/para/customerDialog.fxml");
+        stage.setScene(new Scene(fxmlLoader.load()));
+        stage.setTitle("客户管理-新增");
+
+        stage.initOwner(parentContainer.getScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+    }
+
+    /**
+     * 重载数据
+     */
+    public void refresh() {
+        int lastPageIndex = pagi.getCurrentPageIndex();
+        table.refresh();
+        pagi.setCurrentPageIndex(lastPageIndex);
     }
 }

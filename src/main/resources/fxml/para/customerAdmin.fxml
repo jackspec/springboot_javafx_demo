@@ -8,7 +8,7 @@
     <top>
         <HBox>
             <children>
-                <Button minHeight="-Infinity" minWidth="-Infinity" text="新增">
+                <Button minHeight="-Infinity" minWidth="-Infinity" text="新增" onAction="#btnAddClicked">
                     <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>

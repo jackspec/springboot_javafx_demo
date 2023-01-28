@@ -63,7 +63,7 @@ public abstract class Page<T> {
         initialize();
     }
 
-    private void initialize() {
+    public void initialize() {
         totalRecord.set(rowCount());
 
         // calculate the number of total pages

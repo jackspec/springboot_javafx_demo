@@ -2,13 +2,11 @@ package com.turbo00.springboot_javax_study1.interfaces.javafx;
 
 import javafx.collections.FXCollections;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
-import javafx.util.Callback;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +15,7 @@ import java.util.HashMap;
 public class TableWithPaginationAndSorting<T> {
     private Page<T> page;
     private TableView<T> tableView;
-    private Pagination tableViewWithPaginationPane;
+    private Pagination pagination;
 
     public Page<T> getPage() {
         return page;
@@ -27,20 +25,20 @@ public class TableWithPaginationAndSorting<T> {
         return tableView;
     }
 
-    public Pagination getTableViewWithPaginationPane() {
-        return tableViewWithPaginationPane;
+    public Pagination getPagination() {
+        return pagination;
     }
 
     public TableWithPaginationAndSorting(Page<T> page, TableView<T> tableView, Pagination pagination) {
         this.page = page;
         this.tableView = tableView;
-        tableViewWithPaginationPane = pagination;
-        tableViewWithPaginationPane.pageCountProperty().bindBidirectional(page.totalPageProperty());
+        this.pagination = pagination;
+        this.pagination.pageCountProperty().bindBidirectional(page.totalPageProperty());
         updatePagination();
     }
 
-    private void updatePagination() {
-        tableViewWithPaginationPane.setPageFactory(pageIndex -> {
+    public void updatePagination() {
+        pagination.setPageFactory(pageIndex -> {
             tableView.setItems(FXCollections.observableList(page.getCurrentPageDataList(pageIndex)));
             //a dummy group.当返回一个group时，在界面上不占用位置
             //如果直接返回tableView,则tableView的高度会消失，变成上下挤在一起的一个tableView
@@ -49,6 +47,11 @@ public class TableWithPaginationAndSorting<T> {
             group.setUserData(new String("content of page(zero based):" + pageIndex));
             return group;
         });
+    }
+
+    public void refresh() {
+        updatePagination();
+        page.initialize();
     }
 
     private HashMap<Label, String> orderMap = new HashMap<>();

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.turbo00.springboot_javax_study1.interfaces.javafx.para.CustomerDialogController">
+    <HBox>
+        <Label text="名称："/>
+        <TextField fx:id="txtName"/>
+    </HBox>
+    <HBox>
+        <Label text="联系方式："/>
+        <TextField fx:id="txtContact"/>
+    </HBox>
+    <HBox>
+        <Button text="确定" onAction="#btnOkClicked"/>
+        <Button text="取消" onAction="#btnCancelClicked"/>
+    </HBox>
+</VBox>
