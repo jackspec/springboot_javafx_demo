@@ -1,5 +1,6 @@
 package com.turbo00.springboot_javax_study1.interfaces.javafx.para;
 
+import com.turbo00.springboot_javax_study1.application.para.CustomerService;
 import com.turbo00.springboot_javax_study1.domain.para.Customer;
 import com.turbo00.springboot_javax_study1.domain.para.CustomerRepository;
 import com.turbo00.springboot_javax_study1.infrastructure.persistence.hibernate.JpaCriteriaHolder;
@@ -44,6 +45,8 @@ public class CustomerAdminController implements Initializable {
 
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    CustomerService customerService;
 
     TableWithPaginationAndSorting<Customer> table;
     int pageSize = 10;
@@ -60,7 +63,9 @@ public class CustomerAdminController implements Initializable {
                 (observableValue, oldValue, newValue) -> tblCustomer.setPrefHeight(newValue.doubleValue())
         );
 
-
+        TableColumn<Customer, String> idCol = new TableColumn<>("id");
+        idCol.setCellValueFactory(new PropertyValueFactory("id"));
+        idCol.setVisible(false);
         TableColumn<Customer, String> nameCol = new TableColumn<>("姓名");
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         TableColumn<Customer, String> contactCol = new TableColumn<>("联系方式");
@@ -119,6 +124,14 @@ public class CustomerAdminController implements Initializable {
      * 重载数据
      */
     public void refresh() {
+        int lastPageIndex = pagi.getCurrentPageIndex();
+        table.refresh();
+        pagi.setCurrentPageIndex(lastPageIndex);
+    }
+
+    public void btnDeleteClicked(ActionEvent actionEvent) {
+        Customer customer = tblCustomer.getSelectionModel().getSelectedItem();
+        customerService.deleteCustomer(customer);
         int lastPageIndex = pagi.getCurrentPageIndex();
         table.refresh();
         pagi.setCurrentPageIndex(lastPageIndex);
