@@ -11,12 +11,13 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
 import static com.turbo00.springboot_javax_study1.SpringbootJavaxStudy1Application.loadFxml;
 
-@Component
+@Controller
 public class MainController {
     @Autowired
     CustomerAdminController customerAdminController;

@@ -13,13 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
 import static com.turbo00.springboot_javax_study1.SpringbootJavaxStudy1Application.loadFxml;
 
 @Slf4j
-@Component
+@Controller
 public class LoginController {
     @Value("${app_title}")
     private String appTitle;

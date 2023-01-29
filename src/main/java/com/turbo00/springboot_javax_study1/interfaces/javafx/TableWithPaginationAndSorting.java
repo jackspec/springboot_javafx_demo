@@ -52,6 +52,7 @@ public class TableWithPaginationAndSorting<T> {
     public void refresh() {
         updatePagination();
         page.initialize();
+        tableView.refresh();
     }
 
     private HashMap<Label, String> orderMap = new HashMap<>();

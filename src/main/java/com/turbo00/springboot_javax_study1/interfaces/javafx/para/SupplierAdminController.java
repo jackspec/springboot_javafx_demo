@@ -11,11 +11,12 @@ import javafx.scene.layout.Pane;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Component
+@Controller
 public class SupplierAdminController {
 
 

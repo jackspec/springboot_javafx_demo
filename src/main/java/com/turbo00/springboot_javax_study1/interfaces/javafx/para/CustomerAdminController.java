@@ -8,15 +8,14 @@ import com.turbo00.springboot_javax_study1.interfaces.javafx.TableWithPagination
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -25,15 +24,17 @@ import lombok.Setter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.turbo00.springboot_javax_study1.SpringbootJavaxStudy1Application.loadFxml;
 
-@Component
+@Controller
 public class CustomerAdminController implements Initializable {
     @Setter
     BorderPane parentContainer;
@@ -47,6 +48,8 @@ public class CustomerAdminController implements Initializable {
     CustomerRepository customerRepository;
     @Autowired
     CustomerService customerService;
+    @Autowired
+    CustomerDialogController customerDialogController;
 
     TableWithPaginationAndSorting<Customer> table;
     int pageSize = 10;
@@ -114,9 +117,10 @@ public class CustomerAdminController implements Initializable {
         FXMLLoader fxmlLoader = loadFxml("/fxml/para/customerDialog.fxml");
         stage.setScene(new Scene(fxmlLoader.load()));
         stage.setTitle("客户管理-新增");
-
         stage.initOwner(parentContainer.getScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
+        customerDialogController.setParentController(this);
+        customerDialogController.setCustomer(null);
         stage.showAndWait();
     }
 
@@ -130,10 +134,43 @@ public class CustomerAdminController implements Initializable {
     }
 
     public void btnDeleteClicked(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("确认");
+        alert.setHeaderText("正在进行删除操作");
+        alert.setContentText("真的要删除吗?");
+
         Customer customer = tblCustomer.getSelectionModel().getSelectedItem();
-        customerService.deleteCustomer(customer);
-        int lastPageIndex = pagi.getCurrentPageIndex();
+        if (customer != null) {
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+
+                customerService.deleteCustomer(customer);
+                int lastPageIndex = pagi.getCurrentPageIndex();
+                table.refresh();
+                pagi.setCurrentPageIndex(lastPageIndex);
+            }
+        }
+    }
+
+    public void btnModifyClicked(ActionEvent actionEvent) throws IOException {
+        Customer customer = tblCustomer.getSelectionModel().getSelectedItem();
+        if (customer != null) {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = loadFxml("/fxml/para/customerDialog.fxml");
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setTitle("客户管理-修改");
+            stage.initOwner(parentContainer.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            customerDialogController.setParentController(this);
+            customerDialogController.setCustomer(customer);
+
+            stage.showAndWait();
+        }
+    }
+
+    public void btnRefreshClicked(ActionEvent actionEvent) {
         table.refresh();
-        pagi.setCurrentPageIndex(lastPageIndex);
+        pagi.setCurrentPageIndex(0);
     }
 }
