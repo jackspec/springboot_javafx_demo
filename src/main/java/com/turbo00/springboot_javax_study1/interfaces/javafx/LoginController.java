@@ -1,6 +1,6 @@
 package com.turbo00.springboot_javax_study1.interfaces.javafx;
 
-import com.turbo00.springboot_javax_study1.services.LoginService;
+import com.turbo00.springboot_javax_study1.domain.service.LoginService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

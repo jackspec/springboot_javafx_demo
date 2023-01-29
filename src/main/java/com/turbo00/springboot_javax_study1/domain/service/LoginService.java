@@ -1,4 +1,4 @@
-package com.turbo00.springboot_javax_study1.services;
+package com.turbo00.springboot_javax_study1.domain.service;
 
 import org.springframework.stereotype.Service;
 
