@@ -73,7 +73,9 @@ public class CustomerAdminController implements Initializable {
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         TableColumn<Customer, String> contactCol = new TableColumn<>("联系方式");
         contactCol.setCellValueFactory(new PropertyValueFactory("contact"));
-        tblCustomer.getColumns().addAll(nameCol, contactCol);
+        TableColumn<Customer, String> addressCol = new TableColumn<>("地址");
+        addressCol.setCellValueFactory(new PropertyValueFactory("address"));
+        tblCustomer.getColumns().addAll(nameCol, contactCol, addressCol);
         tblCustomer.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         //create page object
@@ -172,5 +174,10 @@ public class CustomerAdminController implements Initializable {
     public void btnRefreshClicked(ActionEvent actionEvent) {
         table.refresh();
         pagi.setCurrentPageIndex(0);
+    }
+
+    public void btnCloseClicked(ActionEvent actionEvent) {
+        parentContainer.setCenter(null);
+
     }
 }

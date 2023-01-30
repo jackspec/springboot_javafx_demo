@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.text.Text?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.turbo00.springboot_javax_study1.interfaces.javafx.para.CustomerDialogController">
-    <HBox>
-        <Label text="名称："/>
-        <TextField fx:id="txtName"/>
-    </HBox>
-    <HBox>
-        <Label text="联系方式："/>
-        <TextField fx:id="txtContact"/>
-    </HBox>
-    <HBox>
-        <Button text="确定" onAction="#btnOkClicked"/>
-        <Button text="取消" onAction="#btnCancelClicked"/>
-    </HBox>
-</VBox>
+<GridPane hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.turbo00.springboot_javax_study1.interfaces.javafx.para.CustomerDialogController">
+    <columnConstraints>
+        <ColumnConstraints minWidth="-Infinity" />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+      <RowConstraints />
+    </rowConstraints>
+    <children>
+        <Label text="名称：" GridPane.rowIndex="0"/>
+        <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <Label text="联系方式：" GridPane.rowIndex="1" />
+        <TextField fx:id="txtContact" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+        <Label text="地址:" GridPane.rowIndex="2" />
+        <TextArea fx:id="txtaAddress" prefHeight="94.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="备注:" GridPane.rowIndex="3" />
+        <TextArea fx:id="txtaMemo" prefHeight="94.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <HBox alignment="BASELINE_RIGHT" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <children>
+                <Button onAction="#btnOkClicked" text="确定" />
+                <Button onAction="#btnCancelClicked" text="取消" />
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</GridPane>

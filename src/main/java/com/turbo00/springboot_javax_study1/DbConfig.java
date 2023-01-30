@@ -1,6 +1,7 @@
 package com.turbo00.springboot_javax_study1;
 
 import com.turbo00.springboot_javax_study1.domain.para.Customer;
+import com.turbo00.springboot_javax_study1.domain.para.Supplier;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +40,8 @@ public class DbConfig {
         properties.setProperty("hibernate.jdbc.batch_size", "30");
         localSessionFactoryBean.setHibernateProperties(properties);
         localSessionFactoryBean.setAnnotatedClasses(
-                Customer.class
+                Customer.class,
+                Supplier.class
         );
 
         return localSessionFactoryBean;

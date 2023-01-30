@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -31,6 +32,10 @@ public class CustomerDialogController implements Initializable {
     public TextField txtName;
     @FXML
     public TextField txtContact;
+    @FXML
+    public TextArea txtaAddress;
+    @FXML
+    public TextArea txtaMemo;
 
     @Autowired
     CustomerService customerService;
@@ -52,6 +57,8 @@ public class CustomerDialogController implements Initializable {
                 if (newValue != null) {
                     txtName.setText(newValue.getName());
                     txtContact.setText(newValue.getContact());
+                    txtaAddress.setText(newValue.getAddress());
+                    txtaMemo.setText(newValue.getMemo());
                 }
             }
         });
@@ -62,8 +69,10 @@ public class CustomerDialogController implements Initializable {
     }
 
     public void btnOkClicked(ActionEvent actionEvent) {
-        String strName = txtName.getText();
-        String strContact = txtContact.getText();
+        String strName = txtName.getText().trim();
+        String strContact = txtContact.getText().trim();
+        String strAddress = txtaAddress.getText().trim();
+        String strMemo = txtaMemo.getText().trim();
 
         if(StringUtils.isEmpty(strName)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -82,6 +91,8 @@ public class CustomerDialogController implements Initializable {
         }
         customer.setName(strName);
         customer.setContact(strContact);
+        customer.setAddress(strAddress);
+        customer.setMemo(strMemo);
 
         if (currCustomerProperty.getValue() != null) {
             //modify
